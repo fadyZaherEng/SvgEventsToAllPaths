@@ -38,7 +38,6 @@ dependencies:
   flutter_svg:
   svg_path_parser:
   path_parsing:
-  touchable:
 
 dev_dependencies:
   flutter_test:

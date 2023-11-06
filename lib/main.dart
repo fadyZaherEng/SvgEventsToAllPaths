@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:image_parts_click/map_svg_data.dart';
 
@@ -18,13 +20,17 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   Province? _pressedProvince;
+  @override
+  void initState() {
+    MapSvgData.parseSvgToPath();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
         (safeZoneHeight / 2.0) -
         navBarHeight;
     Offset offset = Offset(x, y);
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Provinces of The Netherlands')),
+      appBar: AppBar(title: const Text('Svg Paths Actions')),
       body: SafeArea(
         child: Transform.scale(
           scale: ((height / MapSvgData.height)) * scaleFactor,
@@ -108,11 +113,12 @@ class PathPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Path path = getPathByProvince(_province);
     canvas.drawPath(
-        path,
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..color = Colors.black
-          ..strokeWidth = 2.0);
+      path,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..color = Colors.black
+        ..strokeWidth = 2.0,
+    );
   }
 
   @override
