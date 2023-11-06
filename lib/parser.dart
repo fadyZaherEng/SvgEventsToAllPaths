@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, depend_on_referenced_packages
 
 import 'dart:async';
 
@@ -13,6 +13,20 @@ class SvgParser {
   /// Each [PathSegment] represents a continuous Path element of the parent Path
   final List<PathSegment> _pathSegments = <PathSegment>[];
   List<Path> _paths = <Path>[];
+  Color parseColor(String cStr) {
+    if (cStr == null || cStr.isEmpty) {
+      throw UnsupportedError("Empty color field found.");
+    }
+    if (cStr[0] == '#') {
+      return Color(int.parse(cStr.substring(1), radix: 16)).withOpacity(
+          1.0); // Hex to int: from https://stackoverflow.com/a/51290420/9452450
+    } else if (cStr == 'none') {
+      return Colors.transparent;
+    } else {
+      throw UnsupportedError(
+          "Only hex color format currently supported. String:  $cStr");
+    }
+  }
 
   //Extract segments of each path and create [PathSegment] representation
   void addPathSegments(
@@ -58,13 +72,13 @@ class SvgParser {
                 xml.XmlName.fromString("qualified"),
                 "",
               ));
-      height = double.tryParse(someH.value)!;
+      height = double.tryParse(someH.value.replaceAll("px", ""))!;
       var someW = node.firstWhere((attr) => attr.name.local == "width",
           orElse: () => xml.XmlAttribute(
                 xml.XmlName.fromString("qualified"),
                 "",
               ));
-      width = double.tryParse(someW.value)!;
+      width = double.tryParse(someW.value.replaceAll("px", ""))!;
       var someViewBox = node.firstWhere((attr) => attr.name.local == "viewbox",
           orElse: () => xml.XmlAttribute(
                 xml.XmlName.fromString("qualified"),
@@ -101,6 +115,10 @@ class SvgParser {
         RegExpMatch? match = exp.firstMatch(style.value);
         exp = RegExp(r"stroke-width:([0-9.]+)");
         match = exp.firstMatch(style.value);
+        if (match != null) {
+          String? cStr = match.group(1);
+          color = parseColor(cStr ?? "");
+        }
         if (match != null) {
           String? cStr = match.group(1);
           strokeWidth = double.tryParse(cStr ?? "");

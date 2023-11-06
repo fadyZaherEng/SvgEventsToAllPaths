@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:image_parts_click/map_svg_data.dart';
@@ -11,10 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Clickable SVG map of The Netherlands',
-        theme: ThemeData(primarySwatch: Colors.deepPurple),
-        debugShowCheckedModeBanner: false,
-        home: const MyHomePage());
+      title: 'Clickable SVG ',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        useMaterial3: true,
+      ),
+      debugShowCheckedModeBanner: false,
+      home: const MyHomePage(),
+    );
   }
 }
 
@@ -26,7 +30,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Province? _pressedProvince;
+  Path? _pressedProvince;
+
   @override
   void initState() {
     MapSvgData.parseSvgToPath();
@@ -48,16 +53,14 @@ class _MyHomePageState extends State<MyHomePage> {
         navBarHeight;
     Offset offset = Offset(x, y);
     return Scaffold(
-      appBar: AppBar(title: const Text('Svg Paths Actions')),
+      appBar: AppBar(
+        title: const Text(
+          'Svg Paths Actions',
+        ),
+      ),
       body: SafeArea(
-        child: Transform.scale(
-          scale: ((height / MapSvgData.height)) * scaleFactor,
-          child: Transform.translate(
-            offset: offset,
-            child: Stack(
-              children: _buildMap(),
-            ),
-          ),
+        child: Stack(
+          children: _buildMap(),
         ),
       ),
     );
@@ -65,13 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Widget> _buildMap() {
     List<Widget> provinces = [];
-    for (int i = 0; i < Province.values.length; i++) {
-      provinces.add(_buildProvince(Province.values[i]));
+    for (int i = 0; i < MapSvgData.paths.length; i++) {
+      provinces.add(_buildProvince(MapSvgData.getPath(i)));
     }
     return provinces;
   }
 
-  Widget _buildProvince(Province province) {
+  Widget _buildProvince(Path province) {
     return ClipPath(
       clipper: PathClipper(province),
       child: Stack(
@@ -97,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _provincePressed(Province province) {
+  void _provincePressed(Path province) {
     setState(() {
       print(province);
       _pressedProvince = province;
@@ -106,15 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class PathPainter extends CustomPainter {
-  final Province _province;
+  final Path _province;
 
   PathPainter(this._province);
 
   @override
   void paint(Canvas canvas, Size size) {
-    Path path = getPathByProvince(_province);
+    //Path path = getPathByProvince(_province);
     canvas.drawPath(
-      path,
+      _province,
       Paint()
         ..style = PaintingStyle.stroke
         ..color = Colors.black
@@ -131,13 +134,13 @@ class PathPainter extends CustomPainter {
 }
 
 class PathClipper extends CustomClipper<Path> {
-  final Province _province;
+  final Path _province;
 
   PathClipper(this._province);
 
   @override
   Path getClip(Size size) {
-    return getPathByProvince(_province);
+    return _province;
   }
 
   @override
