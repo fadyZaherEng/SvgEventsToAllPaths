@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:image_parts_click/map_svg_data.dart';
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -117,7 +118,8 @@ class PathPainter extends CustomPainter {
       Paint()
         ..style = PaintingStyle.stroke
         ..color = Colors.black
-        ..strokeWidth = 2.0,
+        ..strokeWidth = 2.0
+        ..isAntiAlias,
     );
   }
 
