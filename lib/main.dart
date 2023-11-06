@@ -40,18 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    double navBarHeight =
-        Theme.of(context).platform == TargetPlatform.android ? 56.0 : 44.0;
-    double safeZoneHeight = MediaQuery.of(context).padding.bottom;
-    double scaleFactor = 0.5;
-    double x = (width / 2.0) - (MapSvgData.width / 2.0);
-    double y = (height / 2.0) -
-        (MapSvgData.height / 2.0) -
-        (safeZoneHeight / 2.0) -
-        navBarHeight;
-    Offset offset = Offset(x, y);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
