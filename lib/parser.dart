@@ -39,7 +39,6 @@ class SvgParser {
   double width = 0;
   double height = 0;
   String viewbox = "";
-
   double? get svgWidth {
     return width;
   }
@@ -100,11 +99,6 @@ class SvgParser {
         //Parse color of stroke
         RegExp exp = RegExp(r"stroke:([^;]+);");
         RegExpMatch? match = exp.firstMatch(style.value);
-        // if (match != null) {
-        //   String? cStr = match.group(1);
-        //   color = parseColor(cStr ?? "");
-        // }
-        //Parse stroke-width
         exp = RegExp(r"stroke-width:([0-9.]+)");
         match = exp.firstMatch(style.value);
         if (match != null) {
@@ -112,7 +106,6 @@ class SvgParser {
           strokeWidth = double.tryParse(cStr ?? "");
         }
       }
-
       var strokeWidthElement =
           attributes.firstWhere((attr) => attr.name.local == "stroke-width",
               orElse: () => xml.XmlAttribute(
@@ -122,7 +115,6 @@ class SvgParser {
       if (strokeWidthElement != null) {
         strokeWidth = double.tryParse(strokeWidthElement.value);
       }
-
       _paths.add(path);
       addPathSegments(path, index, strokeWidth, color);
       index++;

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_parts_click/map_svg_data.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
