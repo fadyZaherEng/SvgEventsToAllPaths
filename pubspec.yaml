@@ -38,6 +38,8 @@ dependencies:
   flutter_svg:
   svg_path_parser:
   path_parsing:
+  flutter_bloc:
+  bloc:
 
 dev_dependencies:
   flutter_test:

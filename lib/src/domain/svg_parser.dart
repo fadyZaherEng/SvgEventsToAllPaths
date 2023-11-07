@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison, depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages
 
 import 'dart:async';
 
