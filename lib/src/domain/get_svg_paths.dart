@@ -13,11 +13,10 @@ class MapSvgPaths {
 
   Future<void> parseSvgToPath() async {
     SvgParser parser = SvgParser();
-    parser.loadFromFile(svgPath).then((value) {
-      paths = parser.getPaths();
-      heightSvg = parser.svgHeight!;
-      widthSvg = parser.svgWidth!;
-    });
+    await parser.loadFromFile(svgPath);
+    paths = parser.getPaths();
+    heightSvg = parser.svgHeight!;
+    widthSvg = parser.svgWidth!;
   }
 
   Path getPath(idx) => paths[idx];
